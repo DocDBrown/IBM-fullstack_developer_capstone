@@ -13,6 +13,7 @@ from .populate import initiate
 from django.contrib.auth import login, logout, authenticate
 from .models import CarMake, CarModel
 from .restapis import get_request, analyze_review_sentiments, post_review
+import requests
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -84,7 +85,6 @@ def get_cars(request):
         cars.append({"CarModel": car_model.name, "CarMake": car_model.car_make.name})
     return JsonResponse({"CarModels":cars})
 
-#Update the `get_dealerships` render list of dealerships all by default, particular state if state is passed
 def get_dealerships(request, state="All"):
     if(state == "All"):
         endpoint = "/fetchDealers"
