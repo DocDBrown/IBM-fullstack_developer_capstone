@@ -7,10 +7,10 @@
 <script>
 
 const logout = async (e) => {
-    console.log("Logout function called");  // Log function call
+    console.log("Logout function called");  
     let logout_url = window.location.origin+"/djangoapp/logout";
   const res = await fetch(logout_url, {
-    method: "GET",
+    method: "POST",
   });
 
   const json = await res.json();

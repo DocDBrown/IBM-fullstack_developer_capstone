@@ -5,14 +5,14 @@ from django.conf import settings
 from . import views
 
 app_name = 'djangoapp'
-urlpatterns = [
-    # # path for registration
 
+urlpatterns = [
+    # path for registration (if needed)
+    path(route='register', view=views.registration, name='register'),
     # path for login
     path(route='login', view=views.login_user, name='login'),
     path(route='logout', view=views.logout_request, name='logout'),
-    # path for dealer reviews view
+    # path for dealer reviews view (if needed)
 
-    # path for add a review view
-
+    # path for add a review view (if needed)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
