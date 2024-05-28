@@ -3,8 +3,6 @@ from django.db import models
 from django.utils.timezone import now
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-# Create your models here.
-
 class CarMake(models.Model):
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=300)
@@ -25,7 +23,6 @@ class CarModel(models.Model):
     dealer_id = models.IntegerField()
     name = models.CharField(max_length=30)
     type = models.CharField(max_length=10, choices=car_choice, default='SUV')
-    doors = models.IntegerField()
     year = models.IntegerField(default=2023, 
         validators=[
             MaxValueValidator(2023),

@@ -120,4 +120,4 @@ const PostReview = () => {
     </div>
   )
 }
-export default PostReview
+export default PostReview;
