@@ -1,9 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib import messages
-from datetime import datetime
 import logging
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -11,10 +7,10 @@ from .populate import initiate
 from django.contrib.auth import login, logout, authenticate
 from .models import CarMake, CarModel
 from .restapis import get_request, analyze_review_sentiments, post_review
-import requests
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
+
 
 @csrf_exempt
 def login_user(request):
@@ -27,6 +23,7 @@ def login_user(request):
         login(request, user)
         data = {"userName": username, "status": "Authenticated"}
     return JsonResponse(data)
+
 
 @csrf_exempt  
 def logout_request(request):
@@ -43,6 +40,7 @@ def logout_request(request):
     else:
         logger.warning("Logout request received but no user is logged in")
         return JsonResponse({"error": "No user logged in"}, status=400)
+
 
 @csrf_exempt
 def registration(request):
@@ -62,13 +60,15 @@ def registration(request):
         logger.debug("{} is new user".format(username))
 
     if not username_exist:
-        user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, password=password, email=email)
+        user = User.objects.create_user(username=username, 
+            first_name=first_name, last_name=last_name, password=password, email=email)
         login(request, user)
         data = {"userName": username, "status": "Authenticated"}
         return JsonResponse(data)
     else:
         data = {"userName": username, "error": "Already Registered"}
         return JsonResponse(data)
+
 
 def get_cars(request):
     count = CarMake.objects.filter().count()
@@ -78,9 +78,11 @@ def get_cars(request):
     car_models = CarModel.objects.select_related('car_make')
     cars = []
     for car_model in car_models:
-        cars.append({"CarModel": car_model.name, "CarMake": car_model.car_make.name})
+        cars.append({"CarModel": car_model.name, 
+            "CarMake": car_model.car_make.name})
     return JsonResponse({"CarModels":cars})
-    
+
+
 def get_dealerships(request, state="All"):
     if state == "All":
         endpoint = "/fetchDealers"
@@ -89,6 +91,7 @@ def get_dealerships(request, state="All"):
     dealerships = get_request(endpoint)
     return JsonResponse({"status": 200, "dealers": dealerships})
 
+
 def get_dealer_details(request, dealer_id):
     if(dealer_id):
         endpoint = "/fetchDealer/"+str(dealer_id)
@@ -96,6 +99,7 @@ def get_dealer_details(request, dealer_id):
         return JsonResponse({"status":200,"dealer":dealership})
     else:
         return JsonResponse({"status":400,"message":"Bad Request"})
+
 
 def get_dealer_reviews(request, dealer_id):
     if(dealer_id):
@@ -108,6 +112,7 @@ def get_dealer_reviews(request, dealer_id):
         return JsonResponse({"status":200,"reviews":reviews})
     else:
         return JsonResponse({"status":400,"message":"Bad Request"})
+
 
 def add_review(request):
     if(request.user.is_anonymous == False):
