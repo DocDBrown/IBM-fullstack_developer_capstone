@@ -11,24 +11,19 @@ class CarMake(models.Model):
         return self.name
 
 class CarModel(models.Model):
-    SUV = 'SUV'
-    Sedan = 'Sedan'
-    Wagon = 'Wagon'
-    car_choice = [
-        (SUV, 'SUV'),
-        (Sedan, 'Sedan'),
-        (Wagon, 'Wagon'),
+    car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)  
+    name = models.CharField(max_length=100)
+    CAR_TYPES = [
+        ('SEDAN', 'Sedan'),
+        ('SUV', 'SUV'),
+        ('WAGON', 'Wagon'),
     ]
-    car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
-    dealer_id = models.IntegerField()
-    name = models.CharField(max_length=30)
-    type = models.CharField(max_length=10, choices=car_choice, default='SUV')
-    year = models.IntegerField(default=2023, 
+    type = models.CharField(max_length=10, choices=CAR_TYPES, default='SUV')
+    year = models.IntegerField(default=2023,
         validators=[
             MaxValueValidator(2023),
             MinValueValidator(2015)
         ])
 
     def __str__(self):
-        return self.name  
-
+        return self.name 
