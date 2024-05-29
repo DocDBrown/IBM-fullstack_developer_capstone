@@ -58,9 +58,7 @@ def registration(request):
         print(f"Error: {e}")
 
     if not username_exist:
-        user = User.objects.create_user(username=username,
-                                    first_name=first_name, last_name=last_name,
-                                    password=password, email=email)
+        user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, password=password, email=email)  # noqa
         login(request, user)
         data = {"userName": username, "status": "Authenticated"}
         return JsonResponse(data)
@@ -120,7 +118,7 @@ def add_review(request):
             response = post_review(data)
             return JsonResponse({"status": 200, "response": response})
         except Exception as e:
-            return JsonResponse({"status": 401, 
+            return JsonResponse({"status": 401,
                                  "message": f"Error: {e}"})
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
