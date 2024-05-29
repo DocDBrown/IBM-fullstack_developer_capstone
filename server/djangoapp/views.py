@@ -59,8 +59,8 @@ def registration(request):
 
     if not username_exist:
         user = User.objects.create_user(username=username,
-                            first_name=first_name, last_name=last_name,
-                            password=password, email=email)
+                                    first_name=first_name, last_name=last_name,
+                                    password=password, email=email)
         login(request, user)
         data = {"userName": username, "status": "Authenticated"}
         return JsonResponse(data)
@@ -119,7 +119,8 @@ def add_review(request):
         try:
             response = post_review(data)
             return JsonResponse({"status": 200, "response": response})
-        except:
-            return JsonResponse({"status": 401, "message": "Error in posting review"})
+        except Exception as e:
+            return JsonResponse({"status": 401, 
+                                 "message": f"Error: {e}"})
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
